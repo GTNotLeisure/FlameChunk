@@ -5,12 +5,16 @@ import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import com.hfstudio.flamechunk.FlameChunk;
 import com.hfstudio.flamechunk.common.data.ScanLimits;
+import com.hfstudio.flamechunk.common.integration.Mods;
 import com.hfstudio.flamechunk.common.tick.TickCategory;
 
 @Config(modid = FlameChunk.MODID, filename = "flamechunk", configSubDirectory = "flamechunk", category = "client")
 @Config.LangKeyPattern(pattern = "flamechunk.gui.config.%cat.%field", fullyQualified = true)
 @Config.Comment("Client-side performance display preferences")
 public class ClientConfig {
+
+    @Config.Ignore
+    private static final int JOURNEYMAP_SEARCH_BAR_OFFSET = 18;
 
     @Config.Ignore
     public static final int MIN_SCAN_SECONDS = ScanLimits.MIN_SECONDS;
@@ -141,6 +145,7 @@ public class ClientConfig {
 
     public static void register() throws ConfigException {
         ConfigurationManager.registerConfig(ClientConfig.class);
+        adjustJourneyMapButtonDefaults();
     }
 
     public static void save() {
@@ -174,6 +179,25 @@ public class ClientConfig {
         journeyMap6ClearButtonBottom = 24;
         reportOutputMode = ReportOutputMode.SCREEN;
         tooltipCategories = new TooltipCategories();
+        adjustJourneyMapButtonDefaults();
+    }
+
+    private static void adjustJourneyMapButtonDefaults() {
+        if (!Mods.VisualProspecting.isModLoaded()) {
+            return;
+        }
+        if (journeyMap5ButtonX == 6 && journeyMap5ButtonBottom == 4) {
+            journeyMap5ButtonBottom += JOURNEYMAP_SEARCH_BAR_OFFSET;
+        }
+        if (journeyMap5ClearButtonX == 86 && journeyMap5ClearButtonBottom == 4) {
+            journeyMap5ClearButtonBottom += JOURNEYMAP_SEARCH_BAR_OFFSET;
+        }
+        if (journeyMap6ButtonX == 6 && journeyMap6ButtonBottom == 24) {
+            journeyMap6ButtonBottom += JOURNEYMAP_SEARCH_BAR_OFFSET;
+        }
+        if (journeyMap6ClearButtonX == 86 && journeyMap6ClearButtonBottom == 24) {
+            journeyMap6ClearButtonBottom += JOURNEYMAP_SEARCH_BAR_OFFSET;
+        }
     }
 
     public static int boundedScanSeconds(int value) {

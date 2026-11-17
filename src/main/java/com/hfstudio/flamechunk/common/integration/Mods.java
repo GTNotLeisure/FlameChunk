@@ -27,6 +27,7 @@ public enum Mods implements IMod, ITargetMod {
     XaeroWorldMap("XaeroWorldMap"),
     XaeroMinimap("XaeroMinimap"),
     Navigator("navigator"),
+    VisualProspecting("visualprospecting"),
     ServerUtilities("serverutilities"),
     AppliedEnergistics2("appliedenergistics2"),
     ;
